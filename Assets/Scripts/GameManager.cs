@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private Transform playerTransform;
     private float spawnZ = 0.0f;
     private float tileLength = 5f;
-    private int amountOfTileOsScreen = 5;
+    private int amountOfTileOnScreen = 20;
     public float spX = 0;
     public float spY = 6;
     public float spZ = 1;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 	void Start ()
 	{
 	    playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-	    for (int i = 0; i < amountOfTileOsScreen; i++)
+	    for (int i = 0; i < amountOfTileOnScreen; i++)
 	    {
 	        SpawnTile();
 	    }
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-	    if (playerTransform.position.z > (spawnZ - amountOfTileOsScreen * tileLength))
+	    if (playerTransform.position.z > (spawnZ - amountOfTileOnScreen * tileLength))
 	    {
 	        SpawnTile();
 	    }
