@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     public float spX = 0;
     public float spY = 6;
     public float spZ = 1;
-    // Use this for initialization
+
+
 	void Start ()
 	{
 	    playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -25,17 +26,15 @@ public class GameManager : MonoBehaviour
 	    }
 	}
 	
-	// Update is called once per frame
 	void Update () {
 	    if (playerTransform.position.z > (spawnZ - amountOfTileOnScreen * tileLength))
 	    {
 	        SpawnTile();
 	    }
 	}
-
+    
     private void SpawnTile(int PrefabIndex = -1)
     {
-        
         GameObject go;
         go = Instantiate(tilePrefabs[0/*Convert.ToInt32(Random.Range(0,2))*/]) as GameObject;
         go.transform.SetParent(transform);
