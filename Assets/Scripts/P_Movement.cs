@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class P_Movement : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class P_Movement : MonoBehaviour
 
     public float jumpSpeed = 8.0F;
     public float gravity = 20.0F;
-    private Vector3 moveDirection = Vector3.zero;
+    private Vector3 horizontalDirection = Vector3.zero;
+    private Vector3 verticalDirection = Vector3.zero;
+
 
     void Start ()
     {
@@ -33,24 +36,26 @@ public class P_Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q))
         {
-            moveDirection = transform.TransformDirection(Vector3.left) * moveSpeed;
+            horizontalDirection = transform.TransformDirection(Vector3.left) * moveSpeed;
         }
         else if (Input.GetKey(KeyCode.E))
         {
-            moveDirection = transform.TransformDirection(Vector3.right) * moveSpeed;
+            horizontalDirection = transform.TransformDirection(Vector3.right) * moveSpeed;
         }
-        else if (Input.GetKey(KeyCode.Space))
+        else
         {
-            
-            moveDirection.y = jumpSpeed;
+            horizontalDirection = Vector3.zero;
         }
 
-        moveDirection.y -= gravity * Time.deltaTime;
-        controller.Move((transform.TransformDirection(Vector3.forward) * moveSpeed) + moveDirection * Time.deltaTime);
-        //controller.Move(transform.TransformDirection(Vector3.forward) * moveSpeed * Time.deltaTime);
+        if (Input.GetKey(KeyCode.Space))
+        {
 
-        //transform.Translate(targetPosition * moveSpeed * Time.deltaTime, Space.Self);
+            verticalDirection = Vector3.up * jumpSpeed;
+        }
 
+        verticalDirection.y -= gravity * Time.deltaTime;
+        controller.Move((transform.TransformDirection(Vector3.forward) * moveSpeed + horizontalDirection) * Time.deltaTime);
+	    controller.Move(verticalDirection * Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 10 * rotationSmooth * Time.deltaTime);
     }
 }
