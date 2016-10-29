@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class P_Movement : MonoBehaviour {
-
+public class P_Movement : MonoBehaviour
+{
+    private CharacterController controller;
     private Quaternion targetRotation;
-    private Vector3 targetPosition;
-    public float moveSpeed;
+    public float moveSpeed = 5.0f;
     public float rotationSmooth = 1.0f;
+
+    public float jumpSpeed = 8.0F;
+    public float gravity = 20.0F;
+    private Vector3 moveDirection = Vector3.zero;
 
     void Start ()
     {
         targetRotation = GetComponent<Rigidbody>().transform.rotation;
-        targetPosition = GetComponent<Rigidbody>().transform.position;
+        controller = GetComponent<CharacterController>();
     }
 	
 	// Update is called once per frame
@@ -29,23 +33,24 @@ public class P_Movement : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Q))
         {
-            targetPosition = Vector3.forward + Vector3.left;
+            moveDirection = transform.TransformDirection(Vector3.left) * moveSpeed;
         }
         else if (Input.GetKey(KeyCode.E))
         {
-            targetPosition = Vector3.forward + Vector3.right;
+            moveDirection = transform.TransformDirection(Vector3.right) * moveSpeed;
         }
-        else
-        if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.Space))
         {
-            targetPosition = Vector3.forward + Vector3.up * 50;
-        }
-        else
-        {
-            targetPosition = Vector3.forward;
+            
+            moveDirection.y = jumpSpeed;
         }
 
-        transform.Translate(targetPosition * moveSpeed * Time.deltaTime, Space.Self);
+        moveDirection.y -= gravity * Time.deltaTime;
+        controller.Move((transform.TransformDirection(Vector3.forward) * moveSpeed) + moveDirection * Time.deltaTime);
+        //controller.Move(transform.TransformDirection(Vector3.forward) * moveSpeed * Time.deltaTime);
+
+        //transform.Translate(targetPosition * moveSpeed * Time.deltaTime, Space.Self);
+
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 10 * rotationSmooth * Time.deltaTime);
     }
 }

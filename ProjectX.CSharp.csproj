@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\CorridorController.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\P_Death_Gravity.cs" />
+    <Compile Include="Assets\Scripts\P_Jump.cs" />
     <Compile Include="Assets\Scripts\P_Movement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

@@ -34,17 +34,17 @@ public class P_Death_Gravity : MonoBehaviour
 
         controller.Move(moveVector * Time.deltaTime);
 
-        // Смерть
-        if (verticalVelocity < -30f)
-        {
-            isDead = true;
-        }
-        if (isDead)
-        {
-            transform.position = new Vector3(0.0f, 1.5f, 0.0f);
-            verticalVelocity = -0.5f;
-            isDead = false;
-            //return;
-        }
+        //// Смерть
+        //if (verticalVelocity < -30f)
+        //{
+        //    isDead = true;
+        //}
+        //if (isDead)
+        //{
+        //    transform.position = new Vector3(0.0f, 1.5f, 0.0f);
+        //    verticalVelocity = -0.5f;
+        //    isDead = false;
+        //    //return;
+        //}
     }
 }
