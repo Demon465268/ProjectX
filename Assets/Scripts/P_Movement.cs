@@ -14,15 +14,21 @@ public class P_Movement : MonoBehaviour
     private Vector3 horizontalDirection = Vector3.zero;
     private Vector3 verticalDirection = Vector3.zero;
 
+    public bool isSliding = false;
+    private float slideDistance;
+    public float maxSlideDistance = 10.0f;
+    private Vector3 previousPosition;
+    
+
 
     void Start ()
     {
-        targetRotation = GetComponent<Rigidbody>().transform.rotation;
+        targetRotation = GetComponent<CharacterController>().transform.rotation;
         controller = GetComponent<CharacterController>();
     }
 	
 	// Update is called once per frame
-	void Update ()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -36,26 +42,48 @@ public class P_Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q))
         {
-            horizontalDirection = transform.TransformDirection(Vector3.left) * moveSpeed;
+            horizontalDirection = transform.TransformDirection(Vector3.left)*moveSpeed;
         }
         else if (Input.GetKey(KeyCode.E))
         {
-            horizontalDirection = transform.TransformDirection(Vector3.right) * moveSpeed;
+            horizontalDirection = transform.TransformDirection(Vector3.right)*moveSpeed;
         }
         else
         {
             horizontalDirection = Vector3.zero;
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-
-            verticalDirection = Vector3.up * jumpSpeed;
+            verticalDirection = Vector3.up*jumpSpeed;
         }
-
+        else if (Input.GetKeyDown(KeyCode.S) && isSliding == false)
+        {
+            slideDistance = 0;
+            transform.localScale += new Vector3(0f, -1.0f, 0f);
+            controller.height = 0.5f;
+            isSliding = true;
+        }
+        
         verticalDirection.y -= gravity * Time.deltaTime;
         controller.Move((transform.TransformDirection(Vector3.forward) * moveSpeed + horizontalDirection) * Time.deltaTime);
 	    controller.Move(verticalDirection * Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 10 * rotationSmooth * Time.deltaTime);
+
+
+        if (isSliding == true)
+        {
+            if (slideDistance < maxSlideDistance)
+            {
+                slideDistance += Vector3.Magnitude(transform.position - previousPosition);
+            }
+            else
+            {
+                transform.localScale += new Vector3(0f, 1.0f, 0f);
+                controller.height = 1.0f;
+                isSliding = false;
+            }
+        }
+        previousPosition = transform.position;
     }
 }
