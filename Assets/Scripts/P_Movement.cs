@@ -53,7 +53,7 @@ public class P_Movement : MonoBehaviour
             horizontalDirection = Vector3.zero;
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
         {
             verticalDirection = Vector3.up*jumpSpeed;
         }
